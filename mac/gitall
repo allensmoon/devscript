@@ -1,0 +1,51 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+  echo "Usage: ${0##*/} [pull|push|fetch]"
+  exit
+fi
+
+branch=$2
+
+possibleRemotes=(origin shanghai stash);
+realRemotes=();
+
+for remote in ${possibleRemotes[@]}
+do
+  if git remote -v| grep -q "$remote"; then
+    echo "find:" $remote;
+    realRemotes+=($remote);
+  fi
+done
+
+while
+  case "$1" in
+    fetch)
+      for remote in ${realRemotes[@]}
+      do
+        echo "fetch:" $remote;
+        git fetch $remote;
+      done
+      ;;
+    pull|push)
+      if [ -z "$branch" ]; then
+        echo "Please specify branch!!";
+      else
+        for remote in ${realRemotes[@]}
+        do
+          echo "$1:" $remote $branch;
+          git $1 $remote $branch
+        done
+      fi
+      exit
+      ;;
+    *)
+      echo "no such service: $service"
+      exit
+      ;;
+  esac
+  shift
+  [ -n "$1" ]
+do
+  continue
+done
