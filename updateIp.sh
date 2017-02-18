@@ -1,13 +1,21 @@
 oldIP=$1
 newIP=$2
 
+if [ "$oldIP" = "file" ]; then
+  oldIP=$(<oldIP)
+  echo "$value"
+fi
+
 replaceStr="s/"$oldIP"/"$newIP"/g"
 
 echo $replaceStr
 
-sed -i "$replaceStr" /etc/hosts
-sed -i "$replaceStr" /var/named/*.com
-sed -i "$replaceStr" /var/named/*.net
-sed -i "$replaceStr" /home/allen/work/lcta/*.sh
+sudo sed -i "$replaceStr" /etc/hosts
+sudo sed -i "$replaceStr" /var/named/*.com
+sudo sed -i "$replaceStr" /var/named/*.net
+sudo sed -i "$replaceStr" /home/allen/work/lcta/*.sh
+
+#save old ip
+echo $newIP > oldIP
 
 sudo /etc/init.d/named restart
