@@ -12,7 +12,7 @@ realRemotes=();
 
 for remote in ${possibleRemotes[@]}
 do
-  if git remote -v| grep -q "$remote"; then
+  if git remote -v| grep "^$remote"; then
     echo "find:" $remote;
     realRemotes+=($remote);
   fi
